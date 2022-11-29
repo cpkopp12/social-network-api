@@ -1,6 +1,7 @@
 //DECLARATIONS: express, mongoose ------------------------
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./routes')
 
 //express app ======================
 const app = express();
@@ -21,4 +22,6 @@ mongoose.connect(
 mongoose.set('debug', true);
 
 //use routes and listen --------------------------
+app.use(routes);
+
 app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`))
