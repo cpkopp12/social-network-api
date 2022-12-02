@@ -3,6 +3,29 @@ const { User, Thought } = require('../models');
 
 //THOUGHT CONTROLLER ================================
 const thoughtController = {
+    //get all thoughts
+    getAllThoughts(req, res) {
+        Thought.find({})
+            .select('-__v')
+            .sort({ _id:-1 })
+            .then(dbData => res.json(dbData))
+            .catch(err => {
+                console.log(err);
+                res.sendStatus(400);
+              });
+    },
+    //thought by id
+    getThoughtById({ params }, res) {
+        Thought.find({ _id: params.thoughtId})
+            .then(dbData => {
+                if (!dbData) {
+                    res.status(404).json({ message: 'no thought matching id' });
+                    return;
+                }
+                res.json(dbData);
+            })
+            .catch(err => res.json(err));
+    },
     // create new thought
     addThought({ params, body }, res) {
         Thought.create(body)
@@ -66,7 +89,7 @@ const thoughtController = {
     removeReaction({ params }, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $pull: { reactions: { reactionId: params.reactionId }}},
+            { $pull: { reactions: { _id: params.reactionId }}},
             { new: true }
         )
             .then(dbData => res.json(dbData))
