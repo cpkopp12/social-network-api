@@ -3,7 +3,7 @@ const { User, Thought } = require('../models');
 
 //THOUGHT CONTROLLER ================================
 const thoughtController = {
-    // add thought
+    // create new thought
     addThought({ params, body }, res) {
         Thought.create(body)
             //pass new thought id to user
@@ -16,12 +16,28 @@ const thoughtController = {
             })
             .then(dbData => {
                 if(!dbData) {
-                    res.status(404).json({ message: 'No pizza found with this id!' });
+                    res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
                 res.json(dbData);
             })
             .catch(err => res.json(err));
+    },
+    //create new reaction
+    addReaction({ params, body }, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.thoughtId},
+            { $push: { reactions: body }},
+            { new: true, runValidators: true }
+        )
+            .then(dbData => {
+                if(!dbData) {
+                res.status(404).json({ message: 'No thought found with this id!' });
+                return;
+            }
+            res.json(dbData);
+        })
+        .catch(err => res.json(err));
     }
 };
 
