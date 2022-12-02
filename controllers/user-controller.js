@@ -61,6 +61,12 @@ const userController = {
                 console.log(err);
                 res.sendStatus(400);
             });
+    },
+    //delete user by id
+    deleteUser({ params }, res) {
+        User.findOneAndDelete({ _id: params.id })
+            .then(dbData => res.json(dbData))
+            .catch(err => res.json(err));
     }
 
 };
