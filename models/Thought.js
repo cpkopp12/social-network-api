@@ -1,5 +1,6 @@
-//DECLARATIONS: mongoose Schema+model+Types ---------------------------
+//DECLARATIONS: mongoose Schema+model+Types, dateFormat ---------------------------
 const { Schema, model, Types } = require('mongoose');
+const { formatDate } = require('../utils/formatDate');
 
 //THOUGHT+REACTION SCHEMAS ============================================
 const ReactionSchema = new Schema(
@@ -20,7 +21,8 @@ const ReactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            get: createdAt=> formatDate(createdAt)
             //ADD GEtTER TO FORMAT
         }
     },
@@ -42,7 +44,8 @@ const ThoughtSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            get: createdAt=> formatDate(createdAt)
             //ADD GETTER TO FORMAT
         },
         username: {
