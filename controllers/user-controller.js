@@ -68,6 +68,22 @@ const userController = {
         User.findOneAndDelete({ _id: params.id })
             .then(dbData => res.json(dbData))
             .catch(err => res.json(err));
+    },
+    //add new friend by id
+    addFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $push: { friends: params.friendId }},
+            { new: true, runValidators: true }
+        )
+            .then(dbData => {
+                if (!dbData) {
+                    res.status(404);
+                    throw ('one of the ids does not match');
+                }
+                return res.json(dbData);
+            })
+            .catch(err => res.json(err));
     }
 
 };

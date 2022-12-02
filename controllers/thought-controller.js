@@ -46,7 +46,6 @@ const thoughtController = {
                 if (!dbThoughtData) {
                     res.status(404);
                     throw 'no thought with this id';
-                    return res.json();
                 }
                 return User.findOneAndUpdate(
                     { _id: params.userId },
